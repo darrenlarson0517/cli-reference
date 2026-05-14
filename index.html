@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLI Reference — Cisco &amp; Arista</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;--border2:#444c56;--text:#e6edf3;--text2:#8b949e;--text3:#6e7681;--accent:#58a6ff;--accent-bg:#1f3a5f;--green:#3fb950;--amber:#d29922;--red:#f85149;--r:6px;--rl:10px}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.shell{max-width:860px;margin:0 auto;padding:24px 20px 60px}
+.header{display:flex;align-items:baseline;gap:12px;margin-bottom:24px;border-bottom:.5px solid var(--border);padding-bottom:16px}
+.header-title{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600}
+.header-title span{color:var(--accent)}
+.header-sub{font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.key-section{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.key-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.key-input{flex:1;min-width:180px;background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 10px}
+.key-input:focus{outline:none;border-color:var(--border2)}
+.key-status{font-family:'JetBrains Mono',monospace;font-size:11px;white-space:nowrap}
+.key-status.ok{color:var(--green)}.key-status.missing{color:var(--amber)}
+.ctx-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.ctx-tag{font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;border-radius:20px;border:.5px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s}
+.ctx-tag:hover{border-color:var(--border2);color:var(--text2)}
+.ctx-tag.active{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+.input-area{display:flex;gap:8px;margin-bottom:20px}
+.query-input{flex:1;background:var(--bg2);border:.5px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'IBM Plex Sans',sans-serif;font-size:14px;padding:10px 14px;resize:none;height:68px;line-height:1.5}
+.query-input::placeholder{color:var(--text3)}
+.query-input:focus{outline:none;border-color:var(--border2)}
+.go-btn{padding:0 18px;background:var(--accent-bg);border:.5px solid var(--accent);border-radius:var(--r);color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;cursor:pointer;min-width:64px;display:flex;align-items:center;justify-content:center}
+.go-btn:hover{background:#264d7a}.go-btn:disabled{opacity:.4;cursor:not-allowed}
+.os-tabs{display:flex;border-bottom:.5px solid var(--border)}
+.os-tab{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;padding:8px 16px;background:transparent;border:none;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-.5px;transition:all .15s}
+.os-tab:hover{color:var(--text2)}.os-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.result-panel{background:var(--bg2);border:.5px solid var(--border);border-top:none;border-radius:0 0 var(--rl) var(--rl);padding:16px;min-height:100px}
+.os-content{display:none}.os-content.active{display:block}
+.cmd-block{margin-bottom:16px}.cmd-block:last-child{margin-bottom:0}
+.cmd-mode{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.cmd-mode::before{content:'';display:inline-block;width:6px;height:6px;background:var(--amber);border-radius:50%}
+.cmd-line-wrap{display:flex;align-items:stretch;gap:6px;margin-bottom:5px}
+.cmd-line{flex:1;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--green);background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r);padding:7px 12px;white-space:pre-wrap;word-break:break-all;line-height:1.5}
+.copy-btn{padding:0 10px;background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r);color:var(--text3);cursor:pointer;font-size:13px;display:flex;align-items:center;transition:all .15s}
+.copy-btn:hover{color:var(--text);border-color:var(--border2)}.copy-btn.copied{color:var(--green);border-color:var(--green)}
+.cmd-note{font-size:12px;color:var(--text2);margin-top:12px;padding:8px 12px;border-left:2px solid var(--border2);line-height:1.6}
+.empty-state{text-align:center;padding:32px 0;color:var(--text3);font-size:13px;font-family:'JetBrains Mono',monospace}
+.loading-state{display:flex;align-items:center;justify-content:center;gap:10px;padding:32px 0;color:var(--text3);font-size:13px;font-family:'JetBrains Mono',monospace}
+.spinner{width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.init-panel{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);padding:24px}
+.init-label{font-size:13px;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-bottom:14px}
+.example-chip{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text2);padding:7px 12px;background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.example-chip::before{content:'>_';color:var(--accent);font-size:11px}
+.example-chip:hover{border-color:var(--border2);color:var(--text)}
+.history-section{margin-top:24px}
+.history-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.hist-item{font-size:12px;color:var(--text2);padding:6px 10px;border-radius:var(--r);cursor:pointer;border:.5px solid transparent;transition:all .15s;display:flex;align-items:center;gap:8px}
+.hist-item::before{content:'↺';font-size:11px;color:var(--text3)}
+.hist-item:hover{border-color:var(--border);color:var(--text);background:var(--bg2)}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="header">
+    <div class="header-title"><span>&gt;_</span> CLI Reference</div>
+    <div class="header-sub">Cisco IOS · NX-OS · Arista EOS</div>
+  </div>
+  <div class="key-section">
+    <span class="key-label">API Key</span>
+    <input class="key-input" id="apiKeyInput" type="password" placeholder="sk-ant-…" oninput="updateKeyStatus()" autocomplete="off" spellcheck="false">
+    <span class="key-status missing" id="keyStatus">⚠ key required</span>
+  </div>
+  <div class="ctx-row" id="ctxRow">
+    <button class="ctx-tag active" data-ctx="SMPTE 2110 / broadcast IP production">SMPTE 2110</button>
+    <button class="ctx-tag" data-ctx="data center networking">Data center</button>
+    <button class="ctx-tag" data-ctx="campus LAN">Campus LAN</button>
+    <button class="ctx-tag" data-ctx="multicast routing and IGMP">Multicast</button>
+    <button class="ctx-tag" data-ctx="ACL and security policies">Security / ACL</button>
+    <button class="ctx-tag" data-ctx="QoS and DSCP marking">QoS / DSCP</button>
+    <button class="ctx-tag" data-ctx="PTP / IEEE 1588 timing">PTP timing</button>
+  </div>
+  <div class="input-area">
+    <textarea class="query-input" id="queryInput" placeholder="Describe what you want to configure…&#10;e.g. enable DHCP for VLAN 10"></textarea>
+    <button class="go-btn" id="goBtn" onclick="runQuery()">Run ↗</button>
+  </div>
+  <div id="mainArea">
+    <div class="init-panel">
+      <div class="init-label">Try one of these examples:</div>
+      <div class="example-chip" onclick="loadExample(this)">enable DHCP for VLAN 10</div>
+      <div class="example-chip" onclick="loadExample(this)">enable IGMP snooping on VLAN 100 with querier</div>
+      <div class="example-chip" onclick="loadExample(this)">create a trunk port allowing VLANs 100 200 300</div>
+      <div class="example-chip" onclick="loadExample(this)">set DSCP EF marking for PTP traffic on an interface</div>
+      <div class="example-chip" onclick="loadExample(this)">configure SSH access with local authentication</div>
+      <div class="example-chip" onclick="loadExample(this)">set up OSPF on a point-to-point link</div>
+    </div>
+  </div>
+  <div class="history-section" id="histSection" style="display:none">
+    <div class="history-label">Recent queries</div>
+    <div id="histList"></div>
+  </div>
+</div>
+<script>
+let activeCtx='SMPTE 2110 / broadcast IP production';
+const queryHistory=[];
+function updateKeyStatus(){
+  const key=document.getElementById('apiKeyInput').value.trim();
+  const status=document.getElementById('keyStatus');
+  if(key.startsWith('sk-ant-')&&key.length>20){
+    status.textContent='✓ key set';status.className='key-status ok';
+    localStorage.setItem('cli_ref_key',key);
+  }else{status.textContent='⚠ key required';status.className='key-status missing';}
+}
+window.addEventListener('load',()=>{
+  const saved=localStorage.getItem('cli_ref_key');
+  if(saved){document.getElementById('apiKeyInput').value=saved;updateKeyStatus();}
+});
+document.getElementById('ctxRow').addEventListener('click',e=>{
+  if(!e.target.classList.contains('ctx-tag'))return;
+  document.querySelectorAll('.ctx-tag').forEach(t=>t.classList.remove('active'));
+  e.target.classList.add('active');activeCtx=e.target.dataset.ctx;
+});
+document.getElementById('queryInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();runQuery();}
+});
+function loadExample(el){document.getElementById('queryInput').value=el.textContent.trim();runQuery();}
+function loadHist(q){document.getElementById('queryInput').value=q;runQuery();}
+function switchOS(tab,os){
+  document.querySelectorAll('.os-tab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelectorAll('.os-content').forEach(c=>c.classList.remove('active'));
+  const el=document.getElementById('os-'+os);if(el)el.classList.add('active');
+}
+function copyCmd(btn,text){
+  navigator.clipboard.writeText(text).then(()=>{
+    btn.textContent='✓';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='⎘';btn.classList.remove('copied');},1400);
+  });
+}
+function esc(str){return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function renderResults(data){
+  const osList=[{key:'ios',label:'IOS / IOS-XE',d:data.ios},{key:'nxos',label:'NX-OS',d:data.nxos},{key:'eos',label:'Arista EOS',d:data.eos}];
+  let html='<div class="os-tabs">';
+  osList.forEach((os,i)=>{html+=`<button class="os-tab ${i===0?'active':''}" onclick="switchOS(this,'${os.key}')">${esc(os.label)}</button>`;});
+  html+='</div><div class="result-panel">';
+  osList.forEach((os,i)=>{
+    html+=`<div class="os-content ${i===0?'active':''}" id="os-${os.key}">`;
+    const d=os.d;
+    if(d&&d.blocks&&d.blocks.length>0){
+      d.blocks.forEach(block=>{
+        html+=`<div class="cmd-block"><div class="cmd-mode">${esc(block.mode)}</div>`;
+        block.cmds.forEach(cmd=>{html+=`<div class="cmd-line-wrap"><div class="cmd-line">${esc(cmd)}</div><button class="copy-btn" onclick="copyCmd(this,${JSON.stringify(cmd)})" title="Copy">⎘</button></div>`;});
+        html+='</div>';
+      });
+      if(d.note)html+=`<div class="cmd-note">ℹ ${esc(d.note)}</div>`;
+    }else{
+      html+=`<div class="empty-state">${esc((d&&d.note)?d.note:'Not applicable for this platform.')}</div>`;
+    }
+    html+='</div>';
+  });
+  html+='</div>';
+  document.getElementById('mainArea').innerHTML=html;
+}
+function showLoading(){
+  document.getElementById('mainArea').innerHTML='<div style="background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl)"><div class="loading-state"><div class="spinner"></div> Generating commands…</div></div>';
+}
+function showError(msg){
+  document.getElementById('mainArea').innerHTML=`<div style="background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);padding:24px;text-align:center"><div style="color:var(--red);font-family:'JetBrains Mono',monospace;font-size:13px">Error: ${esc(msg)}</div></div>`;
+}
+function addHistory(q){
+  if(queryHistory.includes(q))return;
+  queryHistory.unshift(q);if(queryHistory.length>8)queryHistory.pop();
+  document.getElementById('histSection').style.display='block';
+  document.getElementById('histList').innerHTML=queryHistory.map(h=>`<div class="hist-item" onclick="loadHist(${JSON.stringify(h)})">${esc(h)}</div>`).join('');
+}
+async function runQuery(){
+  const input=document.getElementById('queryInput');
+  const query=input.value.trim();if(!query)return;
+  const btn=document.getElementById('goBtn');
+  btn.disabled=true;btn.innerHTML='<div class="spinner"></div>';
+  showLoading();
+  const apiKey=document.getElementById('apiKeyInput').value.trim();
+  if(!apiKey){showError('Please paste your Anthropic API key at the top.');btn.disabled=false;btn.innerHTML='Run ↗';return;}
+  const systemPrompt=`You are a network CLI expert. Return ONLY valid JSON, no markdown, no prose:
+{"ios":{"blocks":[{"mode":"Global Config  (config)#","cmds":["cmd"]}],"note":""},"nxos":{"blocks":[{"mode":"Global Config  (config)#","cmds":["cmd"]}],"note":""},"eos":{"blocks":[{"mode":"Global Config  (config)#","cmds":["cmd"]}],"note":""}}
+Mode field examples: "Privileged EXEC  #"  "Global Config  (config)#"  "Interface Config  (config-if)#"  "VLAN Config  (config-vlan)#"
+Group commands by mode. Correct syntax per platform. Context: ${activeCtx}`;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:systemPrompt,messages:[{role:'user',content:query}]})
+    });
+    if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${resp.status}`);}
+    const apiData=await resp.json();
+    const text=apiData.content.map(c=>c.text||'').join('');
+    const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
+    renderResults(parsed);addHistory(query);input.value='';
+  }catch(err){showError(err.message);}
+  btn.disabled=false;btn.innerHTML='Run ↗';
+}
+</script>
+</body>
+</html>
