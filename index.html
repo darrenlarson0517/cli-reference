@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;--border2:#444c56;--text:#e6edf3;--text2:#8b949e;--text3:#6e7681;--accent:#58a6ff;--accent-bg:#1f3a5f;--green:#3fb950;--amber:#d29922;--red:#f85149;--r:6px;--rl:10px}
+:root{--bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--bordr:#30363d;--border2:#444c56;--text:#e6edf3;--text2:#8b949e;--text3:#6e7681;--accent:#58a6ff;--accent-bg:#1f3a5f;--green:#3fb950;--amber:#d29922;--red:#f85149;--r:6px;--rl:10px}
 body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .shell{max-width:860px;margin:0 auto;padding:24px 20px 60px}
 .header{display:flex;align-items:baseline;gap:12px;margin-bottom:24px;border-bottom:.5px solid var(--border);padding-bottom:16px}
@@ -182,7 +182,7 @@ try{
 const resp=await fetch('https://cli-proxy.darren-larson.workers.dev',{
 method:'POST',
 headers:{'Content-Type':'application/json'},
-body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:systemPrompt,messages:[{role:'user',content:query}]})
+body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,system:systemPrompt,messages:[{role:'user',content:query}]})
 });
 if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${resp.status}`);}
 const apiData=await resp.json();
