@@ -14,12 +14,6 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 .header-title{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600}
 .header-title span{color:var(--accent)}
 .header-sub{font-size:12px;color:var(--text3);font-family:'JetBrains Mono',monospace}
-.key-section{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.key-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
-.key-input{flex:1;min-width:180px;background:var(--bg3);border:.5px solid var(--border);border-radius:var(--r);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12px;padding:6px 10px}
-.key-input:focus{outline:none;border-color:var(--border2)}
-.key-status{font-family:'JetBrains Mono',monospace;font-size:11px;white-space:nowrap}
-.key-status.ok{color:var(--green)}.key-status.missing{color:var(--amber)}
 .ctx-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
 .ctx-tag{font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;border-radius:20px;border:.5px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;transition:all .15s}
 .ctx-tag:hover{border-color:var(--border2);color:var(--text2)}
@@ -61,144 +55,142 @@ body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tex
 </head>
 <body>
 <div class="shell">
-  <div class="header">
-    <div class="header-title"><span>&gt;_</span> CLI Reference</div>
-    <div class="header-sub">Cisco IOS · NX-OS · Arista EOS</div>
-  </div>
-  <div class="key-section">
-    <span class="key-label">API Key</span>
-    <input class="key-input" id="apiKeyInput" type="password" placeholder="sk-ant-…" oninput="updateKeyStatus()" autocomplete="off" spellcheck="false">
-    <span class="key-status missing" id="keyStatus">⚠ key required</span>
-  </div>
-  <div class="ctx-row" id="ctxRow">
-    <button class="ctx-tag active" data-ctx="SMPTE 2110 / broadcast IP production">SMPTE 2110</button>
-    <button class="ctx-tag" data-ctx="data center networking">Data center</button>
-    <button class="ctx-tag" data-ctx="campus LAN">Campus LAN</button>
-    <button class="ctx-tag" data-ctx="multicast routing and IGMP">Multicast</button>
-    <button class="ctx-tag" data-ctx="ACL and security policies">Security / ACL</button>
-    <button class="ctx-tag" data-ctx="QoS and DSCP marking">QoS / DSCP</button>
-    <button class="ctx-tag" data-ctx="PTP / IEEE 1588 timing">PTP timing</button>
-  </div>
-  <div class="input-area">
-    <textarea class="query-input" id="queryInput" placeholder="Describe what you want to configure…&#10;e.g. enable DHCP for VLAN 10"></textarea>
-    <button class="go-btn" id="goBtn" onclick="runQuery()">Run ↗</button>
-  </div>
-  <div id="mainArea">
-    <div class="init-panel">
-      <div class="init-label">Try one of these examples:</div>
-      <div class="example-chip" onclick="loadExample(this)">enable DHCP for VLAN 10</div>
-      <div class="example-chip" onclick="loadExample(this)">enable IGMP snooping on VLAN 100 with querier</div>
-      <div class="example-chip" onclick="loadExample(this)">create a trunk port allowing VLANs 100 200 300</div>
-      <div class="example-chip" onclick="loadExample(this)">set DSCP EF marking for PTP traffic on an interface</div>
-      <div class="example-chip" onclick="loadExample(this)">configure SSH access with local authentication</div>
-      <div class="example-chip" onclick="loadExample(this)">set up OSPF on a point-to-point link</div>
-    </div>
-  </div>
-  <div class="history-section" id="histSection" style="display:none">
-    <div class="history-label">Recent queries</div>
-    <div id="histList"></div>
-  </div>
+<div class="header">
+<div class="header-title"><span>&gt;_</span> CLI Reference</div>
+<div class="header-sub">Cisco IOS · NX-OS · Arista EOS</div>
 </div>
+
+<div class="ctx-row" id="ctxRow">
+<button class="ctx-tag active" data-ctx="SMPTE 2110 / broadcast IP production">SMPTE 2110</button>
+<button class="ctx-tag" data-ctx="data center networking">Data center</button>
+<button class="ctx-tag" data-ctx="campus LAN">Campus LAN</button>
+<button class="ctx-tag" data-ctx="multicast routing and IGMP">Multicast</button>
+<button class="ctx-tag" data-ctx="ACL and security policies">Security / ACL</button>
+<button class="ctx-tag" data-ctx="QoS and DSCP marking">QoS / DSCP</button>
+<button class="ctx-tag" data-ctx="PTP / IEEE 1588 timing">PTP timing</button>
+</div>
+
+<div class="input-area">
+<textarea class="query-input" id="queryInput" placeholder="Describe what you want to configure…&#10;e.g. enable DHCP for VLAN 10"></textarea>
+<button class="go-btn" id="goBtn" onclick="runQuery()">Run ↗</button>
+</div>
+
+<div id="mainArea">
+<div class="init-panel">
+<div class="init-label">Try one of these examples:</div>
+<div class="example-chip" onclick="loadExample(this)">enable DHCP for VLAN 10</div>
+<div class="example-chip" onclick="loadExample(this)">enable IGMP snooping on VLAN 100 with querier</div>
+<div class="example-chip" onclick="loadExample(this)">create a trunk port allowing VLANs 100 200 300</div>
+<div class="example-chip" onclick="loadExample(this)">set DSCP EF marking for PTP traffic on an interface</div>
+<div class="example-chip" onclick="loadExample(this)">configure SSH access with local authentication</div>
+<div class="example-chip" onclick="loadExample(this)">set up OSPF on a point-to-point link</div>
+</div>
+</div>
+
+<div class="history-section" id="histSection" style="display:none">
+<div class="history-label">Recent queries</div>
+<div id="histList"></div>
+</div>
+</div>
+
 <script>
 let activeCtx='SMPTE 2110 / broadcast IP production';
 const queryHistory=[];
-function updateKeyStatus(){
-  const key=document.getElementById('apiKeyInput').value.trim();
-  const status=document.getElementById('keyStatus');
-  if(key.startsWith('sk-ant-')&&key.length>20){
-    status.textContent='✓ key set';status.className='key-status ok';
-    localStorage.setItem('cli_ref_key',key);
-  }else{status.textContent='⚠ key required';status.className='key-status missing';}
-}
-window.addEventListener('load',()=>{
-  const saved=localStorage.getItem('cli_ref_key');
-  if(saved){document.getElementById('apiKeyInput').value=saved;updateKeyStatus();}
-});
+
 document.getElementById('ctxRow').addEventListener('click',e=>{
-  if(!e.target.classList.contains('ctx-tag'))return;
-  document.querySelectorAll('.ctx-tag').forEach(t=>t.classList.remove('active'));
-  e.target.classList.add('active');activeCtx=e.target.dataset.ctx;
+if(!e.target.classList.contains('ctx-tag'))return;
+document.querySelectorAll('.ctx-tag').forEach(t=>t.classList.remove('active'));
+e.target.classList.add('active');activeCtx=e.target.dataset.ctx;
 });
+
 document.getElementById('queryInput').addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();runQuery();}
+if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();runQuery();}
 });
+
 function loadExample(el){document.getElementById('queryInput').value=el.textContent.trim();runQuery();}
+
 function loadHist(q){document.getElementById('queryInput').value=q;runQuery();}
+
 function switchOS(tab,os){
-  document.querySelectorAll('.os-tab').forEach(t=>t.classList.remove('active'));
-  tab.classList.add('active');
-  document.querySelectorAll('.os-content').forEach(c=>c.classList.remove('active'));
-  const el=document.getElementById('os-'+os);if(el)el.classList.add('active');
+document.querySelectorAll('.os-tab').forEach(t=>t.classList.remove('active'));
+tab.classList.add('active');
+document.querySelectorAll('.os-content').forEach(c=>c.classList.remove('active'));
+const el=document.getElementById('os-'+os);if(el)el.classList.add('active');
 }
+
 function copyCmd(btn,text){
-  navigator.clipboard.writeText(text).then(()=>{
-    btn.textContent='✓';btn.classList.add('copied');
-    setTimeout(()=>{btn.textContent='⎘';btn.classList.remove('copied');},1400);
-  });
+navigator.clipboard.writeText(text).then(()=>{
+btn.textContent='✓';btn.classList.add('copied');
+setTimeout(()=>{btn.textContent='⎘';btn.classList.remove('copied');},1400);
+});
 }
+
 function esc(str){return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
 function renderResults(data){
-  const osList=[{key:'ios',label:'IOS / IOS-XE',d:data.ios},{key:'nxos',label:'NX-OS',d:data.nxos},{key:'eos',label:'Arista EOS',d:data.eos}];
-  let html='<div class="os-tabs">';
-  osList.forEach((os,i)=>{html+=`<button class="os-tab ${i===0?'active':''}" onclick="switchOS(this,'${os.key}')">${esc(os.label)}</button>`;});
-  html+='</div><div class="result-panel">';
-  osList.forEach((os,i)=>{
-    html+=`<div class="os-content ${i===0?'active':''}" id="os-${os.key}">`;
-    const d=os.d;
-    if(d&&d.blocks&&d.blocks.length>0){
-      d.blocks.forEach(block=>{
-        html+=`<div class="cmd-block"><div class="cmd-mode">${esc(block.mode)}</div>`;
-        block.cmds.forEach(cmd=>{html+=`<div class="cmd-line-wrap"><div class="cmd-line">${esc(cmd)}</div><button class="copy-btn" onclick="copyCmd(this,${JSON.stringify(cmd)})" title="Copy">⎘</button></div>`;});
-        html+='</div>';
-      });
-      if(d.note)html+=`<div class="cmd-note">ℹ ${esc(d.note)}</div>`;
-    }else{
-      html+=`<div class="empty-state">${esc((d&&d.note)?d.note:'Not applicable for this platform.')}</div>`;
-    }
-    html+='</div>';
-  });
-  html+='</div>';
-  document.getElementById('mainArea').innerHTML=html;
+const osList=[{key:'ios',label:'IOS / IOS-XE',d:data.ios},{key:'nxos',label:'NX-OS',d:data.nxos},{key:'eos',label:'Arista EOS',d:data.eos}];
+let html='<div class="os-tabs">';
+osList.forEach((os,i)=>{html+=`<button class="os-tab ${i===0?'active':''}" onclick="switchOS(this,'${os.key}')">${esc(os.label)}</button>`;});
+html+='</div><div class="result-panel">';
+osList.forEach((os,i)=>{
+html+=`<div class="os-content ${i===0?'active':''}" id="os-${os.key}">`;
+const d=os.d;
+if(d&&d.blocks&&d.blocks.length>0){
+d.blocks.forEach(block=>{
+html+=`<div class="cmd-block"><div class="cmd-mode">${esc(block.mode)}</div>`;
+block.cmds.forEach(cmd=>{html+=`<div class="cmd-line-wrap"><div class="cmd-line">${esc(cmd)}</div><button class="copy-btn" onclick="copyCmd(this,${JSON.stringify(cmd)})" title="Copy">⎘</button></div>`;});
+html+='</div>';
+});
+if(d.note)html+=`<div class="cmd-note">ℹ ${esc(d.note)}</div>`;
+}else{
+html+=`<div class="empty-state">${esc((d&&d.note)?d.note:'Not applicable for this platform.')}</div>`;
 }
+html+='</div>';
+});
+html+='</div>';
+document.getElementById('mainArea').innerHTML=html;
+}
+
 function showLoading(){
-  document.getElementById('mainArea').innerHTML='<div style="background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl)"><div class="loading-state"><div class="spinner"></div> Generating commands…</div></div>';
+document.getElementById('mainArea').innerHTML='<div style="background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl)"><div class="loading-state"><div class="spinner"></div> Generating commands…</div></div>';
 }
+
 function showError(msg){
-  document.getElementById('mainArea').innerHTML=`<div style="background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);padding:24px;text-align:center"><div style="color:var(--red);font-family:'JetBrains Mono',monospace;font-size:13px">Error: ${esc(msg)}</div></div>`;
+document.getElementById('mainArea').innerHTML=`<div style="background:var(--bg2);border:.5px solid var(--border);border-radius:var(--rl);padding:24px;text-align:center"><div style="color:var(--red);font-family:'JetBrains Mono',monospace;font-size:13px">Error: ${esc(msg)}</div></div>`;
 }
+
 function addHistory(q){
-  if(queryHistory.includes(q))return;
-  queryHistory.unshift(q);if(queryHistory.length>8)queryHistory.pop();
-  document.getElementById('histSection').style.display='block';
-  document.getElementById('histList').innerHTML=queryHistory.map(h=>`<div class="hist-item" onclick="loadHist(${JSON.stringify(h)})">${esc(h)}</div>`).join('');
+if(queryHistory.includes(q))return;
+queryHistory.unshift(q);if(queryHistory.length>8)queryHistory.pop();
+document.getElementById('histSection').style.display='block';
+document.getElementById('histList').innerHTML=queryHistory.map(h=>`<div class="hist-item" onclick="loadHist(${JSON.stringify(h)})">${esc(h)}</div>`).join('');
 }
+
 async function runQuery(){
-  const input=document.getElementById('queryInput');
-  const query=input.value.trim();if(!query)return;
-  const btn=document.getElementById('goBtn');
-  btn.disabled=true;btn.innerHTML='<div class="spinner"></div>';
-  showLoading();
-  const apiKey=document.getElementById('apiKeyInput').value.trim();
-  if(!apiKey){showError('Please paste your Anthropic API key at the top.');btn.disabled=false;btn.innerHTML='Run ↗';return;}
-  const systemPrompt=`You are a network CLI expert. Return ONLY valid JSON, no markdown, no prose:
-{"ios":{"blocks":[{"mode":"Global Config  (config)#","cmds":["cmd"]}],"note":""},"nxos":{"blocks":[{"mode":"Global Config  (config)#","cmds":["cmd"]}],"note":""},"eos":{"blocks":[{"mode":"Global Config  (config)#","cmds":["cmd"]}],"note":""}}
-Mode field examples: "Privileged EXEC  #"  "Global Config  (config)#"  "Interface Config  (config-if)#"  "VLAN Config  (config-vlan)#"
+const input=document.getElementById('queryInput');
+const query=input.value.trim();if(!query)return;
+const btn=document.getElementById('goBtn');
+btn.disabled=true;btn.innerHTML='<div class="spinner"></div>';
+showLoading();
+
+const systemPrompt=`You are a network CLI expert. Return ONLY valid JSON, no markdown, no prose:
+{"ios":{"blocks":[{"mode":"Global Config (config)#","cmds":["cmd"]}],"note":""},"nxos":{"blocks":[{"mode":"Global Config (config)#","cmds":["cmd"]}],"note":""},"eos":{"blocks":[{"mode":"Global Config (config)#","cmds":["cmd"]}],"note":""}}
+Mode field examples: "Privileged EXEC #" "Global Config (config)#" "Interface Config (config-if)#" "VLAN Config (config-vlan)#"
 Group commands by mode. Correct syntax per platform. Context: ${activeCtx}`;
-  try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      const resp=await fetch('https://cli-proxy.darren-larson.workers.dev',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:systemPrompt,messages:[{role:'user',content:query}]})
-    });
-    if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${resp.status}`);}
-    const apiData=await resp.json();
-    const text=apiData.content.map(c=>c.text||'').join('');
-    const parsed=JSON.parse(text.replace(/```json|```/g,'').trim());
-    renderResults(parsed);addHistory(query);input.value='';
-  }catch(err){showError(err.message);}
-  btn.disabled=false;btn.innerHTML='Run ↗';
+
+try{
+const resp=await fetch('https://cli-proxy.darren-larson.workers.dev',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,system:systemPrompt,messages:[{role:'user',content:query}]})
+});
+if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${resp.status}`);}
+const apiData=await resp.json();
+const text=apiData.content.map(c=>c.text||'').join('');
+const parsed=JSON.parse(text.replace(/\`\`\`json|\`\`\`/g,'').trim());
+renderResults(parsed);addHistory(query);input.value='';
+}catch(err){showError(err.message);}
+btn.disabled=false;btn.innerHTML='Run ↗';
 }
 </script>
 </body>
