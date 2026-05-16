@@ -182,7 +182,7 @@ try{
 const resp=await fetch('https://cli-proxy.darren-larson.workers.dev',{
 method:'POST',
 headers:{'Content-Type':'application/json'},
-body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1200,system:systemPrompt,messages:[{role:'user',content:query}]})
+body:JSON.stringify({model:'claude-sonnet-4-latest',max_tokens:1200,system:systemPrompt,messages:[{role:'user',content:query}]})
 });
 if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${resp.status}`);}
 const apiData=await resp.json();
